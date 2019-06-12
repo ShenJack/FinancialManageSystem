@@ -10,7 +10,9 @@ function load(req, res, next, id) {
 }
 
 function get(req, res) {
-  return res.json(req.user);
+  Todo.findById(req.params.todoId).then(todo =>{
+    res.json(todo)
+  })
 }
 
 function create(req, res, next) {
