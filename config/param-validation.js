@@ -9,6 +9,12 @@ module.exports = {
     }
   },
 
+  createTodo: {
+    body: {
+      title: Joi.string().required(),
+    }
+  },
+
   // UPDATE /api/users/:userId
   updateUser: {
     body: {
