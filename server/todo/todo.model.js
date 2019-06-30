@@ -3,6 +3,9 @@ const mongoose = require('mongoose');
 const httpStatus = require('http-status');
 const APIError = require('../helpers/APIError');
 
+const getTags = tags => tags.join(',');
+const setTags = tags => tags.split(',').slice(0, 10); // max tags
+
 const TodoSchema = new mongoose.Schema({
   title: {
     type: String,
@@ -19,7 +22,9 @@ const TodoSchema = new mongoose.Schema({
   done: {
     type: Boolean,
     default: false
-  }
+  },
+  tags: { type: [], get: getTags, set: setTags },
+
 });
 
 /**

@@ -1,4 +1,6 @@
 const User = require('./user.model');
+const APIError = require('../helpers/APIError')
+const httpStatus = require('http-status');
 
 /**
  * Load user and append to req.
@@ -27,14 +29,27 @@ function get(req, res) {
  * @returns {User}
  */
 function create(req, res, next) {
-  const user = new User({
-    username: req.body.username,
-    mobileNumber: req.body.mobileNumber
-  });
+  let username = req.body.username
+  User.findOne({username}).exec((error, user) => {
+    if (error) {
+      return next(new APIError('内部错误', httpStatus.INTERNAL_SERVER_ERROR, true))
+    } else if (user) {
+      var err = new APIError('用户已存在', httpStatus.UNAUTHORIZED, false);
+      return next(err);
+    } else {
+      const user = new User({
+        username: req.body.username,
+        password:req.body.password,
+      });
 
-  user.save()
-    .then(savedUser => res.json(savedUser))
-    .catch(e => next(e));
+      user.save()
+        .then(savedUser => res.json(savedUser))
+        .catch(e => next(e));
+    }
+  })
+
+
+
 }
 
 /**
