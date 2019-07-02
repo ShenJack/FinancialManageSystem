@@ -8,7 +8,7 @@ const httpStatus = require('http-status');
 function load(req, res, next, id) {
   User.findById(id)
     .then((user) => {
-      req.user = user; // eslint-disable-line no-param-reassign
+        req.user = user; // eslint-disable-line no-param-reassign
       return next();
     })
     .catch(e => next(e));

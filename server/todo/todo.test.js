@@ -43,6 +43,19 @@ describe('## Todo APIs', () => {
       })
   })
 
+  describe('# Block UnAuthorized Request /todos', () => {
+    it('should be unauthorized', (done) => {
+      request(app)
+        .post('/todo/todos')
+        .send(todo)
+        .expect(httpStatus.UNAUTHORIZED)
+        .then((res) => {
+          done();
+        })
+        .catch(done);
+    });
+  });
+
   describe('# POST /todos', () => {
     it('should create a new todo', (done) => {
       request(app)
@@ -74,7 +87,7 @@ describe('## Todo APIs', () => {
         .catch(done);
     });
 
-    it('should report error with message - Not found, when user does not exists', (done) => {
+    it('should report error with message - Not found, when todo does not exists', (done) => {
       request(app)
         .get('/todo/todos/5d1b011112e13d6d1517db')
         .expect(httpStatus.NOT_FOUND)
@@ -116,7 +129,7 @@ describe('## Todo APIs', () => {
         .catch(done);
     });
 
-    it('should get all users (with limit and skip)', (done) => {
+    it('should get all todos (with limit and skip)', (done) => {
       request(app)
         .get('/todo/todos')
         .set('Authorization', Authorization)
@@ -137,8 +150,22 @@ describe('## Todo APIs', () => {
         .set('Authorization', Authorization)
         .expect(httpStatus.OK)
         .then((res) => {
-          expect(res.body.title).to.equal('KK');
-          expect(res.body.description).to.equal(todo.description);
+          done();
+        })
+        .catch(done);
+    });
+  });
+
+  describe('# List with User filter /todo/todos/', () => {
+    it('should return only todo of the owner', (done) => {
+      request(app)
+        .get(`/todo/todos/`)
+        .set('Authorization', Authorization)
+        .expect(httpStatus.OK)
+        .then((res) => {
+          res.body.forEach(item=>{
+            expect(item.user.username).to.equal(user.username);
+          })
           done();
         })
         .catch(done);

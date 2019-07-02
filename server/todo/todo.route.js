@@ -10,7 +10,8 @@ const router = express.Router(); // eslint-disable-line new-cap
 
 router.route('/')
 /** GET /api/users - Get list of users */
-  .get(todoCtrl.list)
+  .get(authCtrl.user.requireLogin,todoCtrl.list,
+  )
 
   /** POST /api/users - Create new user */
   /*Requires login */
@@ -23,8 +24,9 @@ router.route('/:todoId')
   .get(todoCtrl.get)
 
   /** PUT /api/users/:userId - Update user */
-  .put(expressJwt({secret: config.jwtSecret}),
+  .put(
     authCtrl.todo.hasAuthorization,
+    authCtrl.user.requireLogin,
     todoCtrl.update)
 
   /** DELETE /api/users/:userId - Delete user */

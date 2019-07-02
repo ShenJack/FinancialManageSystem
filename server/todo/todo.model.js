@@ -57,8 +57,12 @@ TodoSchema.statics = {
       });
   },
 
-  list({skip = 0, limit = 50} = {}) {
-    return this.find()
+  list(user,{skip = 0, limit = 50} = {}) {
+    let query = {}
+    if(user){
+      query.user = new mongoose.Types.ObjectId(user._id)
+    }
+    return this.find(query)
       .populate('user', 'username')
       .sort({createdAt: -1})
       .skip(+skip)

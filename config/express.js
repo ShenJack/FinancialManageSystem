@@ -13,16 +13,16 @@ const winstonInstance = require('./winston');
 const routes = require('../index.route');
 const config = require('./config');
 const APIError = require('../server/helpers/APIError');
-
+const expressJwt = require('express-jwt')
 const app = express();
-
+const authHelper = require('../server/helpers/auth')
 if (config.env === 'development') {
   app.use(logger('dev'));
 }
 
 // parse body params and attache them to req.body
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({extended: true}));
 
 app.use(cookieParser());
 app.use(compress());
@@ -45,6 +45,7 @@ if (config.env === 'development') {
     colorStatus: true // Color the status code (default green, 3XX cyan, 4XX yellow, 5XX red).
   }));
 }
+app.use(authHelper.jwt.jwtValidator)
 
 // mount all routes on /api path
 app.use('/todo', routes);
@@ -62,6 +63,7 @@ app.use((err, req, res, next) => {
   }
   return next(err);
 });
+
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

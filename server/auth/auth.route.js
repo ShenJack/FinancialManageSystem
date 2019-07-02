@@ -13,5 +13,7 @@ router.route('/login')
 
 /** GET /api/auth/random-number - Protected route,
  * needs token returned by the above as header. Authorization: Bearer {token} */
+router.route('/random-number')
+  .get(authCtrl.user.getRandomNumber);
 
 module.exports = router;

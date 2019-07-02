@@ -52,9 +52,13 @@ function update(req, res, next) {
 
 function list(req, res, next) {
   const {limit = 50, skip = 0} = req.query;
-  Todo.list({limit, skip})
-    .then(users => res.json(users))
-    .catch(e => next(e));
+  if (req.isAuthenticated) {
+    Todo.list(req.user,{limit, skip})
+      .then(users => res.json(users))
+      .catch(e => next(e));
+  }else {
+    res.json([])
+  }
 }
 
 function remove(req, res, next) {
