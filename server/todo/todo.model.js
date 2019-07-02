@@ -19,13 +19,15 @@ const TodoSchema = new mongoose.Schema({
     type: Date,
     default: Date.now
   },
+  user: {type: mongoose.Schema.ObjectId, ref: 'User'},
   done: {
     type: Boolean,
     default: false
   },
-  tags: { type: [], get: getTags, set: setTags },
+  tags: {type: [], get: getTags, set: setTags},
 
 });
+
 
 /**
  * Add your
@@ -37,8 +39,7 @@ const TodoSchema = new mongoose.Schema({
 /**
  * Methods
  */
-TodoSchema.method({
-});
+TodoSchema.method({});
 
 /**
  * Statics
@@ -46,19 +47,20 @@ TodoSchema.method({
 TodoSchema.statics = {
   get(id) {
     return this.findById(id)
+      .populate('user','username')
       .exec()
       .then((todo) => {
-        if (todo) {
-          return todo;
-        }
-        const err = new APIError('No such todo exists!', httpStatus.NOT_FOUND);
-        return Promise.reject(err);
+        return todo;
+      }).catch(err => {
+        const err404 = new APIError('No such todo exists!', httpStatus.NOT_FOUND);
+        return Promise.reject(err404);
       });
   },
 
-  list({ skip = 0, limit = 50 } = {}) {
+  list({skip = 0, limit = 50} = {}) {
     return this.find()
-      .sort({ createdAt: -1 })
+      .populate('user', 'username')
+      .sort({createdAt: -1})
       .skip(+skip)
       .limit(+limit)
       .exec();

@@ -36,7 +36,6 @@ UserSchema.path('username').index({unique:true})
 
 UserSchema.virtual('password')
   .set(function(password) {
-    this._password = password;
     this.salt = this.makeSalt();
     this.hashed_password = this.encryptPassword(password);
   })
@@ -55,6 +54,7 @@ UserSchema.statics = {
    */
   get(id) {
     return this.findById(id)
+      .select('username','createAt')
       .exec()
       .then((user) => {
         if (user) {
@@ -124,6 +124,11 @@ UserSchema.methods = {
     }
   },
 
+  getPublicFields:function () {
+    return {
+      username: this.username,
+    };
+  }
 }
 
 /**
