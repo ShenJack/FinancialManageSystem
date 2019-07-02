@@ -15,7 +15,9 @@ function load(req, res, next, id) {
         next(new APIError('Todo 不存在', httpStatus.NOT_FOUND)
         )
       }
-    })
+    }).catch((err)=>{
+    next(new APIError('Todo 不存在', httpStatus.NOT_FOUND));
+  })
 }
 
 function get(req, res, next) {
