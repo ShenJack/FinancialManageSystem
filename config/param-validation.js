@@ -30,7 +30,9 @@ module.exports = {
   login: {
     body: {
       username: Joi.string().required(),
-      password: Joi.string().required()
+      password: Joi.string().required(),
+      verifyId:Joi.string().required(),
+      code: Joi.string().required(),
     }
   }
 };

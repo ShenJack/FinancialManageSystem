@@ -15,5 +15,7 @@ router.route('/login')
  * needs token returned by the above as header. Authorization: Bearer {token} */
 router.route('/random-number')
   .get(authCtrl.user.getRandomNumber);
+router.route('/verify-code')
+  .get(authCtrl.user.getVerifyCodeImage);
 
 module.exports = router;

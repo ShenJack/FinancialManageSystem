@@ -48,7 +48,7 @@ if (config.env === 'development') {
 app.use(authHelper.jwt.jwtValidator)
 
 // mount all routes on /api path
-app.use('/todo', routes);
+app.use('/financial', routes);
 
 // if error is not an instanceOf APIError, convert it.
 app.use((err, req, res, next) => {
