@@ -5,7 +5,16 @@ module.exports = {
   createUser: {
     body: {
       username: Joi.string().required(),
-      password: Joi.string().required()
+      name:Joi.string().required(),
+      password: Joi.string().required(),
+      role: Joi.string().required(),
+    }
+  },
+
+  createConsume: {
+    body: {
+      type:Joi.string().required(),
+      amount:Joi.string().required(),
     }
   },
 
@@ -18,12 +27,9 @@ module.exports = {
   // UPDATE /api/users/:userId
   updateUser: {
     body: {
-      username: Joi.string().required(),
-      mobileNumber: Joi.string().regex(/^[1-9][0-9]{9}$/).required()
+      password: Joi.string().required(),
+      name:Joi.string()
     },
-    params: {
-      userId: Joi.string().hex().required()
-    }
   },
 
   // POST /api/auth/login
@@ -31,7 +37,7 @@ module.exports = {
     body: {
       username: Joi.string().required(),
       password: Joi.string().required(),
-      verifyId:Joi.string().required(),
+      verifyId: Joi.string().required(),
       code: Joi.string().required(),
     }
   }

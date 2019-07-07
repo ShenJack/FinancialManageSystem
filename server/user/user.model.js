@@ -7,6 +7,8 @@ const crypto = require('crypto');
 /**
  * User Schema
  */
+const ROLE_ADMIN = 'admin'
+const ROLE_USER = 'user'
 const UserSchema = new mongoose.Schema({
   username: {
     type: String,
@@ -16,6 +18,13 @@ const UserSchema = new mongoose.Schema({
   createdAt: {
     type: Date,
     default: Date.now
+  },
+  role:{
+    type:String,
+    default:ROLE_USER
+  },
+  name:{
+    type:String,
   },
   hashed_password: {type: String, default: ''},
   salt: {type: String, default: ''},
@@ -91,6 +100,10 @@ UserSchema.methods = {
 
   authenticate: function(plainText) {
     return this.encryptPassword(plainText) === this.hashed_password;
+  },
+
+  isAdmin:function(){
+    return this.role === ROLE_ADMIN;
   },
 
   /**

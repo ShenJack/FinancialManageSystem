@@ -28,7 +28,7 @@ exports.user = {
           return next(err);
         }else {
           /*验证通过*/
-          image.remove().then(res=>{
+          image.remove().then(removeResult=>{
             let username = req.body.username
             User.findOne({ username }).exec((error, user) => {
               if (error) {
@@ -102,9 +102,17 @@ exports.user = {
 
   requireLogin(req, res, next) {
     if (!req.isAuthenticated) {
-      return next(new APIError('Need Token', httpStatus.FORBIDDEN))
+      return next(new APIError('Require Login', httpStatus.UNAUTHORIZED))
     } else {
       return next()
     }
-  }
+  },
+
+  requireAdmin(req, res, next) {
+    if (!req.user.isAdmin()) {
+      return next(new APIError('Permission Deny', httpStatus.FORBIDDEN))
+    } else if(req){
+      return next()
+    }
+  },
 };

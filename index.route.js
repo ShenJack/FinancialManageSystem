@@ -2,7 +2,7 @@ const express = require('express');
 const userRoutes = require('./server/user/user.route');
 const authRoutes = require('./server/auth/auth.route');
 const todoRoutes = require('./server/todo/todo.route');
-
+const consumeRoutes = require('./server/consume/consume.route')
 const router = express.Router(); // eslint-disable-line new-cap
 
 // TODO: use glob to match *.route files
@@ -21,5 +21,7 @@ router.use('/users', userRoutes);
 
 // mount auth routes at /auth
 router.use('/auth', authRoutes);
+
+router.use('/consumes', consumeRoutes);
 
 module.exports = router;
