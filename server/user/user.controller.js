@@ -94,6 +94,10 @@ function list(req, res, next) {
     .catch(e => next(e));
 }
 
+function info(req, res, next) {
+  res.json(req.user)
+}
+
 /**
  * Delete user.
  * @returns {User}
@@ -105,4 +109,4 @@ function remove(req, res, next) {
     .catch(e => next(e));
 }
 
-module.exports = {load, get, create, update, list, remove};
+module.exports = {load, get, create, update, list, remove,info};

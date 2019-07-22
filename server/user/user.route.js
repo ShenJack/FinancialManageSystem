@@ -15,6 +15,9 @@ router.route('/')
   /** POST /api/users - Create new user */
   .post(validate(paramValidation.createUser), userCtrl.create);
 
+router.route('/info')
+  .get(userCtrl.info)
+
 router.route('/:userId')
 /** GET /api/users/:userId - Get user */
   .get(userCtrl.get)
@@ -26,5 +29,6 @@ router.route('/:userId')
 
 /** Load user when API with userId route parameter is hit */
 router.param('userId', userCtrl.load);
+
 
 module.exports = router;
